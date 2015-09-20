@@ -7,7 +7,9 @@ module Pronto
         @repo = Rugged::Repository.new(path)
       end
 
-      def diff(commit, options = nil)
+      def diff(commit, options = {})
+        options[:patience] = options.fetch(:patience, true)
+
         if commit == :index
           patches = @repo.index.diff(options)
           Patches.new(self, head, patches)
